@@ -1,6 +1,7 @@
 import Hero from './components/Hero';
 import React from 'react';
 import './App.css';
+import About from './components/About';
 
 function App() {
 
@@ -8,6 +9,7 @@ function App() {
     <>
     <main className='relative min-h-screen w-screen overflow-x-hidden'>
     <Hero/>
+    <About/>
     </main>
     </>
   )
