@@ -3,6 +3,7 @@ import React from 'react';
 import './App.css';
 import About from './components/About';
 import NavBar from './components/Navbar';
+import Features from './components/Features';
 
 function App() {
 
@@ -12,6 +13,7 @@ function App() {
       <NavBar/>
     <Hero/>
     <About/>
+    <Features/>
     </main>
     </>
   )
