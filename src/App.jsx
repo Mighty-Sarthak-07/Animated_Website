@@ -4,6 +4,7 @@ import './App.css';
 import About from './components/About';
 import NavBar from './components/Navbar';
 import Features from './components/Features';
+import Story from './components/Story';
 
 function App() {
 
@@ -14,6 +15,7 @@ function App() {
     <Hero/>
     <About/>
     <Features/>
+    <Story/>
     </main>
     </>
   )
