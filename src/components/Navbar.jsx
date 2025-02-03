@@ -1,14 +1,15 @@
 import clsx from "clsx";
 import gsap from "gsap";
-import { useWindowScroll } from "react-use";
 import { useEffect, useRef, useState } from "react";
 import { TiLocationArrow } from "react-icons/ti";
+import { useWindowScroll } from "react-use";
 
 import Button from "./Button";
 
 const navItems = ["Nexus", "Vault", "Prologue", "About", "Contact"];
 
 const NavBar = () => {
+    const hoverSound = new Audio("mixkit-sci-fi-click-900.wav");
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
   const [isIndicatorActive, setIsIndicatorActive] = useState(false);
 
@@ -19,6 +20,27 @@ const NavBar = () => {
   const { y: currentScrollY } = useWindowScroll();
   const [isNavVisible, setIsNavVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+
+  const hoverSoundRef = useRef(null);
+  const [isUserInteracted, setIsUserInteracted] = useState(false);
+
+  useEffect(() => {
+    hoverSoundRef.current = new Audio("/audio/hovering.mp3");
+    const enableAudio = () => {
+      setIsUserInteracted(true);
+      document.removeEventListener("click", enableAudio);
+    };
+
+    document.addEventListener("click", enableAudio);
+    return () => document.removeEventListener("click", enableAudio);
+  }, []);
+
+  const playHoverSound = () => {
+    if (isUserInteracted && hoverSoundRef.current) {
+      hoverSoundRef.current.currentTime = 0;
+      hoverSoundRef.current.play().catch((error) => console.log("Audio play error:", error));
+    }
+  };
 
   const toggleAudioIndicator = () => {
     setIsAudioPlaying((prev) => !prev);
@@ -71,6 +93,7 @@ const NavBar = () => {
               id="product-button"
               title="Products"
               rightIcon={<TiLocationArrow />}
+              onMouseEnter={() => hoverSound.play()}
               containerClass="bg-blue-50 md:flex hidden items-center justify-center gap-1"
             />
           </div>
@@ -82,6 +105,7 @@ const NavBar = () => {
                   key={index}
                   href={`#${item.toLowerCase()}`}
                   className="nav-hover-btn"
+                  onMouseEnter={playHoverSound}
                 >
                   {item}
                 </a>
@@ -91,6 +115,7 @@ const NavBar = () => {
             <button
               onClick={toggleAudioIndicator}
               className="ml-10 flex items-center space-x-0.5"
+              onMouseEnter={playHoverSound}
             >
               <audio
                 ref={audioElementRef}
